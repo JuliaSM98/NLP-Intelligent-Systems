@@ -24,89 +24,51 @@ anyNA(df_train) #the data is clean of missing values
 ######### See the 10 most frequent words for each topic in the data ############ 
 ################################################################################
 
+
 #Computer Science 
 Topic <- df_train[which(df_train$Computer.Science == 1), ]
 cat("total rows: ", nrow(Topic))
 Topic_Corp = VCorpus(VectorSource(Topic))
-CS = TermDocumentMatrix(Topic_Corp,control=list(removePunctuation = T,
-                                                  stripWhitespace = T,
-                                                  removeNumbers = T,
-                                                  tolower= T,
-                                                  stopwords = T,
-                                                  stemming = T))
-r=rowSums(as.matrix(CS))
-plot = head(sort(r, decreasing=TRUE),n=10) 
-barplot(plot, main="Most frequent words for the Computer Science topic")
+CS = TermDocumentMatrix(Topic_Corp,control=list(removePunctuation = T, tolower= T, stopwords = T, stripWhitespace = T, stemming = T, removeNumbers = T))
+barplot(head(sort(rowSums(as.matrix(CS)), decreasing=TRUE),n=10) , main="Most frequent words for the Computer Science topic")
 
 #Physics
 Topic <- df_train[which(df_train$Physics == 1), ]
 cat("total rows: ", nrow(Topic))
 Topic_Corp = VCorpus(VectorSource(Topic))
-CS = TermDocumentMatrix(Topic_Corp,control=list(removePunctuation = T,
-                                               stripWhitespace = T,
-                                               removeNumbers = T,
-                                               tolower= T,
-                                               stopwords = T,
-                                               stemming = T))
-r=rowSums(as.matrix(CS))
-plot = head(sort(r, decreasing=TRUE),n=10) 
-barplot(plot, main="Most frequent words for the Physics topic")
+CS = TermDocumentMatrix(Topic_Corp,control=list(removePunctuation = T, tolower= T, stopwords = T, stripWhitespace = T, stemming = T, removeNumbers = T))
+barplot(head(sort(rowSums(as.matrix(CS)), decreasing=TRUE),n=10) , main="Most frequent words for the Physics topic")
 
 #Mathematics
 Topic <- df_train[which(df_train$Mathematics == 1), ]
 cat("total rows: ", nrow(Topic))
 Topic_Corp = VCorpus(VectorSource(Topic))
-CS = TermDocumentMatrix(Topic_Corp,control=list(removePunctuation = T,
-                                               stripWhitespace = T,
-                                               removeNumbers = T,
-                                               tolower= T,
-                                               stopwords = T,
-                                               stemming = T))
-r=rowSums(as.matrix(CS))
-plot = head(sort(r, decreasing=TRUE),n=10) 
-barplot(plot, main="Most frequent words for the Mathematics topic")
+CS = TermDocumentMatrix(Topic_Corp,control=list(removePunctuation = T, tolower= T, stopwords = T, stripWhitespace = T, stemming = T, removeNumbers = T))
+barplot(head(sort(rowSums(as.matrix(CS)), decreasing=TRUE),n=10) , main="Most frequent words for the Mathematics topic")
+
 
 #Statistics
 Topic <- df_train[which(df_train$Statistics == 1), ]
 cat("total rows: ", nrow(Topic))
 Topic_Corp = VCorpus(VectorSource(Topic))
-CS = TermDocumentMatrix(Topic_Corp,control=list(removePunctuation = T,
-                                               stripWhitespace = T,
-                                               removeNumbers = T,
-                                               tolower= T,
-                                               stopwords = T,
-                                               stemming = T))
-r=rowSums(as.matrix(CS))
-plot = head(sort(r, decreasing=TRUE),n=10) 
-barplot(plot, main="Most frequent words for the Statistics topic")
+CS = TermDocumentMatrix(Topic_Corp,control=list(removePunctuation = T, tolower= T, stopwords = T, stripWhitespace = T, stemming = T, removeNumbers = T))
+barplot(head(sort(rowSums(as.matrix(CS)), decreasing=TRUE),n=10) , main="Most frequent words for the Statistics topic")
+
 
 #Quantitative.Biology
 Topic <- df_train[which(df_train$Quantitative.Biology == 1), ]
 cat("total rows: ", nrow(Topic))
 Topic_Corp = VCorpus(VectorSource(Topic))
-CS = TermDocumentMatrix(Topic_Corp,control=list(removePunctuation = T,
-                                               stripWhitespace = T,
-                                               removeNumbers = T,
-                                               tolower= T,
-                                               stopwords = T,
-                                               stemming = T))
-r=rowSums(as.matrix(CS))
-plot = head(sort(r, decreasing=TRUE),n=10) 
-barplot(plot, main="Most frequent words for the Quantitative Biology topic")
+CS = TermDocumentMatrix(Topic_Corp,control=list(removePunctuation = T, tolower= T, stopwords = T, stripWhitespace = T, stemming = T, removeNumbers = T))
+barplot(head(sort(rowSums(as.matrix(CS)), decreasing=TRUE),n=10) , main="Most frequent words for the Biology topic")
 
 #Quantitative.Finance
 Topic <- df_train[which(df_train$Quantitative.Finance == 1), ]
 cat("total rows: ", nrow(Topic))
 Topic_Corp = VCorpus(VectorSource(Topic))
-CS = TermDocumentMatrix(Topic_Corp,control=list(removePunctuation = T,
-                                               stripWhitespace = T,
-                                               removeNumbers = T,
-                                               tolower= T,
-                                               stopwords = T,
-                                               stemming = T))
-r=rowSums(as.matrix(CS))
-plot = head(sort(r, decreasing=TRUE),n=10) 
-barplot(plot, main="Most frequent words for the Quantitative Finance topic")
+CS = TermDocumentMatrix(Topic_Corp,control=list(removePunctuation = T, tolower= T, stopwords = T, stripWhitespace = T, stemming = T, removeNumbers = T))
+barplot(head(sort(rowSums(as.matrix(CS)), decreasing=TRUE),n=10) , main="Most frequent words for the Quantitative Finance topic")
+
 
 ################################################################################
 ##################### Machine learning application #############################
@@ -140,8 +102,6 @@ for(i in 1:dim(df_train)[1]) {
 
 ########################## Pre-processing the data #############################
 
-# Cite: https://www.pluralsight.com/guides/machine-learning-text-data-using-r 
-
 #Check encoding
 df_train$TEXT[!utf8_valid(df_train$TEXT)]
 #Check character normalization
@@ -173,24 +133,26 @@ frequencies = DocumentTermMatrix(corpus)
 sparse = removeSparseTerms(frequencies, 0.995)
 tSparse = as.data.frame(as.matrix(sparse))
 colnames(tSparse) = make.names(colnames(tSparse))
-tSparse$target = df_train$TARGET
+tSparse$targett = df_train$TARGET
 
 #See proportion of labels in target variable
-prop.table(table(tSparse$target)) 
+prop.table(table(tSparse$targett)) 
 
 ##########################Create test and training set##########################
-split=sample(length(tSparse$target),0.7*length(tSparse$target))
+
+set.seed(1000)
+split = sample.split(tSparse$targett, SplitRatio = 0.7)
 trainSparse <- tSparse[split,]
 testSparse <- tSparse[-split,]
 
-
 ##########################Random forest#########################################
 
-trainSparse$target = as.factor(trainSparse$target)
-testSparse$target = as.factor(testSparse$target )
-RF_model = randomForest(target~., data=trainSparse, ntree=200,do.trace=TRUE)
-#RandomForest takes a lot of time
+trainSparse$targett = as.factor(trainSparse$targett)
+testSparse$targett = as.factor(testSparse$targett )
+RF_model = randomForest(targett~., data=trainSparse, ntree=200,do.trace=TRUE)
+#RandomForest takes a lot of time, also it gives different accuracies each time,
+#since there is a random factor. However, accuracies are always above 70%
 predictRF = predict(RF_model, newdata=testSparse)
-confusionMatrix(testSparse$target, predictRF)
+confusionMatrix(testSparse$targett, predictRF)
 
 

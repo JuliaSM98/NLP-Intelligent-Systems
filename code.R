@@ -150,8 +150,7 @@ testSparse <- tSparse[-split,]
 trainSparse$targett = as.factor(trainSparse$targett)
 testSparse$targett = as.factor(testSparse$targett )
 RF_model = randomForest(targett~., data=trainSparse, ntree=200,do.trace=TRUE)
-#RandomForest takes a lot of time, also it gives different accuracies each time,
-#since there is a random factor. However, accuracies are always above 70%
+#RandomForest takes a lot of time
 predictRF = predict(RF_model, newdata=testSparse)
 confusionMatrix(testSparse$targett, predictRF)
 
